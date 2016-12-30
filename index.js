@@ -2,8 +2,7 @@ exports = module.exports = {
   'client': require('./xom/client'),
   'challenge': require('./xom/challenge'),
   'otp/verify': require('./xom/otp/verify'),
-  'ds/users/authenticators': require('./xom/ds/users/authenticators'),
-  'id/map': require('./xom/id/map')
+  'ds/users/authenticators': require('./xom/ds/users/authenticators')
 };
 
 exports.load = function(id) {
