@@ -40,6 +40,6 @@ exports['@implements'] = [
 ];
 exports['@singleton'] = true;
 exports['@require'] = [
-  '../../id/map',
+  '../../idm/map',
   'http://schemas.authnomicon.org/js/login/mfa/opt/authy/Client'
 ];
