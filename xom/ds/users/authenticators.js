@@ -16,12 +16,12 @@ UserAuthenticatorsDirectory.prototype.list = function(user, options, cb) {
     
     self._client.user_status(authyID, function(err, res) {
       if (err) { return cb(err); }
+      
+      var authenticator = {};
+      authenticator.id = '0';
+      authenticator.type = [ 'otp', 'oob' ];
     
-      var credential = {};
-      credential.id = '0';
-      credential.methods = [ 'otp' ];
-    
-      return cb(null, [ credential ]);
+      return cb(null, [ authenticator ]);
     });
   });
 };

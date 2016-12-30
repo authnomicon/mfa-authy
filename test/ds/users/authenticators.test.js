@@ -18,7 +18,7 @@ describe('authy/ds/credentials', function() {
     expect(factory['@singleton']).to.equal(true);
   });
   
-  describe('Directory', function() {
+  describe('UserAuthenticatorsDirectory', function() {
     var directory;
     
     var client = {
@@ -30,7 +30,7 @@ describe('authy/ds/credentials', function() {
     describe('#list', function() {
     
       describe('user with app installed on two iPhones', function() {
-        var credentials;
+        var authenticators;
         
         before(function() {
           var record = {
@@ -67,14 +67,14 @@ describe('authy/ds/credentials', function() {
         
         before(function(done) {
           var directory = factory(idmap, client);
-          directory.list({ id: '1', username: 'johndoe' }, function(_err, _credentials) {
+          directory.list({ id: '1', username: 'johndoe' }, function(_err, _authenticators) {
             if (_err) { return done(_err); }
-            credentials = _credentials;
+            authenticators = _authenticators;
             done();
           });
         });
       
-        it('should call id.map', function() {
+        it('should map user identifier', function() {
           expect(idmap).to.have.been.calledOnce;
           var call = idmap.getCall(0);
           expect(call.args[0]).to.deep.equal({
@@ -83,18 +83,18 @@ describe('authy/ds/credentials', function() {
           });
         });
         
-        it('should call client#user_status', function() {
+        it('should request user status from TOTP API', function() {
           expect(client.user_status).to.have.been.calledOnce;
           var call = client.user_status.getCall(0);
           expect(call.args[0]).to.equal('123456');
         });
         
-        it('should yield credentials', function() {
-          expect(credentials).to.be.an('array');
-          expect(credentials).to.have.length(1);
-          expect(credentials[0]).to.deep.equal({
+        it('should yield authenticators', function() {
+          expect(authenticators).to.be.an('array');
+          expect(authenticators).to.have.length(1);
+          expect(authenticators[0]).to.deep.equal({
             id: '0',
-            methods: [ 'otp' ]
+            type: [ 'otp', 'oob' ]
           });
         });
         
