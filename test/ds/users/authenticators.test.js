@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../../xom/ds/credentials');
+var factory = require('../../../xom/ds/users/authenticators');
 
 
 describe('authy/ds/credentials', function() {
@@ -13,8 +13,8 @@ describe('authy/ds/credentials', function() {
   
   it('should be annotated', function() {
     expect(factory['@implements']).to.have.length(2);
-    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/CredentialDirectory');
-    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/authy/CredentialDirectory');
+    expect(factory['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/UserAuthenticatorsDirectory');
+    expect(factory['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/authy/UserAuthenticatorsDirectory');
     expect(factory['@singleton']).to.equal(true);
   });
   

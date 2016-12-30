@@ -9,10 +9,10 @@ describe('nodex-login-mfa-authy', function() {
   it('should export manifest', function() {
     expect(pkg).to.be.an('object');
     expect(pkg['client']).to.be.a('function');
-    expect(pkg['ds/credentials']).to.be.a('function');
+    expect(pkg['ds/users/authenticators']).to.be.a('function');
   });
   
-  describe('authy/client', function() {
+  describe('client', function() {
     var client = pkg['client'];
     
     it('should be annotated', function() {
@@ -21,13 +21,13 @@ describe('nodex-login-mfa-authy', function() {
     });
   });
   
-  describe('authy/ds/credentials', function() {
-    var rsg = pkg['ds/credentials'];
+  describe('ds/users/authenticators', function() {
+    var rsg = pkg['ds/users/authenticators'];
     
     it('should be annotated', function() {
       expect(rsg['@implements']).to.have.length(2);
-      expect(rsg['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/CredentialDirectory');
-      expect(rsg['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/authy/CredentialDirectory');
+      expect(rsg['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/UserAuthenticatorsDirectory');
+      expect(rsg['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/authy/UserAuthenticatorsDirectory');
       expect(rsg['@singleton']).to.equal(true);
     });
   });
