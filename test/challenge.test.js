@@ -63,6 +63,7 @@ describe('challenge', function() {
         expect(client.request_sms).to.have.been.calledOnce;
         var call = client.request_sms.getCall(0);
         expect(call.args[0]).to.equal(123456);
+        expect(call.args[1]).to.be.a('function')
       });
       
       it('should not yield params', function() {
@@ -70,6 +71,54 @@ describe('challenge', function() {
       });
       
     }); // a typical authenticator
+    
+    describe('an authenticator as out-of-band device', function() {
+      var params;
+      
+      before(function() {
+        var result = {
+          success: true,
+          message: 'SMS token was sent',
+          cellphone: '+1-XXX-XXX-XX34'
+        };
+        
+        sinon.stub(client, 'request_sms').yields(null, result);
+      });
+    
+      after(function() {
+        client.request_sms.restore();
+      });
+      
+      before(function(done) {
+        var challenge = factory(client);
+        var user = { id: '1', username: 'johndoe' };
+        var authenticator = {
+          id: '0',
+          type: [ 'otp', 'oob' ],
+          _userID: 123456
+        }
+        
+        challenge(authenticator, { type: 'oob' }, function(_err, _params) {
+          if (_err) { return done(_err); }
+          params = _params;
+          done();
+        });
+      });
+    
+      it('should request OTP via SMS', function() {
+        expect(client.request_sms).to.have.been.calledOnce;
+        var call = client.request_sms.getCall(0);
+        expect(call.args[0]).to.equal(123456);
+        expect(call.args[1]).to.equal(true);
+      });
+      
+      it('should yield params', function() {
+        expect(params).to.deep.equal({
+          type: 'oob'
+        });
+      });
+      
+    }); // an authenticator as out-of-band device
     
   }); // challenge
   
