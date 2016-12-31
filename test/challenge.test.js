@@ -20,7 +20,8 @@ describe('challenge', function() {
   
   describe('challenge', function() {
     var client = {
-      request_sms: function(){}
+      request_sms: function(){},
+      request_call: function(){}
     };
   
     
@@ -119,6 +120,54 @@ describe('challenge', function() {
       });
       
     }); // an authenticator as out-of-band device
+    
+    describe('an authenticator as out-of-band device via telephone channel', function() {
+      var params;
+      
+      before(function() {
+        var result = {
+          success: true,
+          message: 'Call started...',
+          cellphone: '+1-XXX-XXX-XX34'
+        };
+        
+        sinon.stub(client, 'request_call').yields(null, result);
+      });
+    
+      after(function() {
+        client.request_call.restore();
+      });
+      
+      before(function(done) {
+        var challenge = factory(client);
+        var user = { id: '1', username: 'johndoe' };
+        var authenticator = {
+          id: '0',
+          type: [ 'otp', 'oob' ],
+          _userID: 123456
+        }
+        
+        challenge(authenticator, { type: 'oob', channel: 'tel' }, function(_err, _params) {
+          if (_err) { return done(_err); }
+          params = _params;
+          done();
+        });
+      });
+    
+      it('should request OTP via phone call', function() {
+        expect(client.request_call).to.have.been.calledOnce;
+        var call = client.request_call.getCall(0);
+        expect(call.args[0]).to.equal(123456);
+        expect(call.args[1]).to.equal(true);
+      });
+      
+      it('should yield params', function() {
+        expect(params).to.deep.equal({
+          type: 'oob'
+        });
+      });
+      
+    }); // an authenticator as out-of-band device via telephone channel
     
   }); // challenge
   
