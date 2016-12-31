@@ -115,7 +115,10 @@ describe('challenge', function() {
       
       it('should yield params', function() {
         expect(params).to.deep.equal({
-          type: 'oob'
+          type: 'oob',
+          confirmation: {
+            channel: 'primary'
+          }
         });
       });
       
@@ -163,7 +166,10 @@ describe('challenge', function() {
       
       it('should yield params', function() {
         expect(params).to.deep.equal({
-          type: 'oob'
+          type: 'oob',
+          confirmation: {
+            channel: 'primary'
+          }
         });
       });
       
