@@ -33,7 +33,7 @@ describe('ds/users/credentials', function() {
         var authenticators;
         
         before(function() {
-          var record = {
+          var result = {
             status: {
               authy_id: 123456,
               confirmed: true,
@@ -57,7 +57,7 @@ describe('ds/users/credentials', function() {
             success: true
           };
           
-          sinon.stub(client, 'user_status').yields(null, record);
+          sinon.stub(client, 'user_status').yields(null, result);
           idmap = sinon.stub().yields(null, '123456');
         });
       
@@ -94,7 +94,8 @@ describe('ds/users/credentials', function() {
           expect(authenticators).to.have.length(1);
           expect(authenticators[0]).to.deep.equal({
             id: '0',
-            type: [ 'otp', 'oob' ]
+            type: [ 'otp', 'oob' ],
+            _userID: 123456
           });
         });
         
