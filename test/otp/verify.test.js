@@ -22,7 +22,6 @@ describe('otp/verify', function() {
     var client = {
       verify: function(){}
     };
-    var idmap;
   
     
     describe('a valid token', function() {
@@ -36,7 +35,6 @@ describe('otp/verify', function() {
         };
         
         sinon.stub(client, 'verify').yields(null, result);
-        idmap = sinon.stub().yields(null, '123456');
       });
     
       after(function() {
@@ -44,27 +42,24 @@ describe('otp/verify', function() {
       });
       
       before(function(done) {
-        var verify = factory(idmap, client);
-        verify({ id: '1', username: 'johndoe' }, '0', '12345678', function(_err, _ok) {
+        var verify = factory(client);
+        var authenticator = {
+          id: '0',
+          type: [ 'otp', 'oob' ],
+          _userID: 123456
+        }
+        
+        verify(authenticator, '12345678', function(_err, _ok) {
           if (_err) { return done(_err); }
           ok = _ok;
           done();
         });
       });
     
-      it('should call id.map', function() {
-        expect(idmap).to.have.been.calledOnce;
-        var call = idmap.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: '1',
-          username: 'johndoe'
-        });
-      });
-    
-      it('should call client#verify', function() {
+      it('should verify token', function() {
         expect(client.verify).to.have.been.calledOnce;
         var call = client.verify.getCall(0);
-        expect(call.args[0]).to.equal('123456');
+        expect(call.args[0]).to.equal(123456);
         expect(call.args[1]).to.equal('12345678');
       });
       
@@ -89,7 +84,6 @@ describe('otp/verify', function() {
         };
         
         sinon.stub(client, 'verify').yields(result);
-        idmap = sinon.stub().yields(null, '123456');
       });
     
       after(function() {
@@ -97,27 +91,24 @@ describe('otp/verify', function() {
       });
       
       before(function(done) {
-        var verify = factory(idmap, client);
-        verify({ id: '1', username: 'johndoe' }, '0', '12345678', function(_err, _ok) {
+        var verify = factory(client);
+        var authenticator = {
+          id: '0',
+          type: [ 'otp', 'oob' ],
+          _userID: 123456
+        }
+        
+        verify(authenticator, '12345678', function(_err, _ok) {
           if (_err) { return done(_err); }
           ok = _ok;
           done();
         });
       });
     
-      it('should call id.map', function() {
-        expect(idmap).to.have.been.calledOnce;
-        var call = idmap.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: '1',
-          username: 'johndoe'
-        });
-      });
-    
-      it('should call client#verify', function() {
+      it('should verify token', function() {
         expect(client.verify).to.have.been.calledOnce;
         var call = client.verify.getCall(0);
-        expect(call.args[0]).to.equal('123456');
+        expect(call.args[0]).to.equal(123456);
         expect(call.args[1]).to.equal('12345678');
       });
       
