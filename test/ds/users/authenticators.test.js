@@ -5,7 +5,7 @@ var sinon = require('sinon');
 var factory = require('../../../lib/ds/users/authenticators');
 
 
-describe('authy/ds/credentials', function() {
+describe('ds/users/credentials', function() {
   
   it('should export factory function', function() {
     expect(factory).to.be.a('function');
