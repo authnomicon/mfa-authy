@@ -29,7 +29,11 @@
       "challenge",
       "otp/verify",
       "oob/verify",
-      "ds/users/authenticators"
+      "ds/users/authenticators",
+      "handlers/registration/prompt",
+      "handlers/registration/register",
+      "handlers/prompt",
+      "handlers/verify"
     ]
   },
   "dependencies": {

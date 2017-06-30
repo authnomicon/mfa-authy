@@ -1,35 +1,25 @@
 /* global describe, it */
 
 var expect = require('chai').expect;
-var pkg = require('..');
 
 
 describe('nodex-login-mfa-authy', function() {
   
-  it('should export manifest', function() {
-    expect(pkg).to.be.an('object');
-    expect(pkg['client']).to.be.a('function');
-    expect(pkg['ds/users/authenticators']).to.be.a('function');
-  });
-  
-  describe('client', function() {
-    var client = pkg['client'];
+  describe('package.json', function() {
+    var json = require('../package.json');
     
-    it('should be annotated', function() {
-      expect(client['@implements']).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/authy/Client');
-      expect(client['@singleton']).to.equal(true);
+    it('should have assembly metadata', function() {
+      expect(json.assembly.namespace).to.equal('mfa/authy');
+      
+      expect(json.assembly.components).to.have.length(9);
+      expect(json.assembly.components).to.include('oob/verify');
     });
   });
   
-  describe('ds/users/authenticators', function() {
-    var rsg = pkg['ds/users/authenticators'];
-    
-    it('should be annotated', function() {
-      expect(rsg['@implements']).to.have.length(2);
-      expect(rsg['@implements'][0]).to.equal('http://schemas.authnomicon.org/js/login/mfa/UserAuthenticatorsDirectory');
-      expect(rsg['@implements'][1]).to.equal('http://schemas.authnomicon.org/js/login/mfa/opt/authy/UserAuthenticatorsDirectory');
-      expect(rsg['@singleton']).to.equal(true);
-    });
+  it('should throw if required', function() {
+    expect(function() {
+      var pkg = require('..');
+    }).to.throw(Error).with.property('code', 'MODULE_NOT_FOUND');
   });
   
 });
